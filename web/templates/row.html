@@ -1,0 +1,29 @@
+<tr id="datarow-{{.ID}}">
+  <td>{{.ID}}</td>
+  <td>{{.Company}}</td>
+  <td>{{.Contact}}</td>
+  <td>{{.Country}}</td>
+  <td>
+    <a
+      hx-get="/company/edit/{{.ID}}"
+      hx-target="#datarow-{{.ID}}"
+      hx-swap="outerHTML"
+      hx-indicator="#loading"
+      class="button-small-light"
+      href=""
+    >
+      Edit
+    </a>
+  </td>
+  <td>
+    <a
+      hx-delete="/company/{{.ID}}"
+      hx-target="#companies"
+      hx-confirm="Are you sure you want to delete {{.Company}}?"
+      hx-indicator="#loading"
+      class="button-small-light"
+      href=""
+      >Delete</a
+    >
+  </td>
+</tr>

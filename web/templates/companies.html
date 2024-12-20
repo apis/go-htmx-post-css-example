@@ -1,0 +1,32 @@
+<div id="companies">
+  <div class="add-box">
+    <div class="add-button">
+      <button
+        class="button"
+        role="button"
+        hx-get="/company/add"
+        hx-target="#table-body"
+        hx-swap="outerHTML"
+        hx-indicator="#loading"
+        href=""
+      >
+        Add
+      </button>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Company</th>
+        <th scope="col">Contact</th>
+        <th scope="col">Country</th>
+      </tr>
+    </thead>
+    <tbody id="table-body">
+      {{range .}}
+        {{ template "row.html". }}
+      {{end}}
+    </tbody>
+  </table>
+</div>
