@@ -6,6 +6,7 @@ import (
 	"htmx-example/internal/pkg/staticAssets"
 	"htmx-example/internal/pkg/viewModels"
 	"htmx-example/internal/pkg/web"
+	"htmx-example/internal/pkg/wsNotifications"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
@@ -123,27 +124,25 @@ func startHttpServer(listener net.Listener, simulatedDelay int) *http.Server {
 
 	router.Handle(uiUrlPrefix+"*", staticAssets.Handler(embedFs, embedFsRoot, uiUrlPrefix, defaultUiUrl))
 
-	//add
 	router.Handle("GET /company/add", web.Handler{Request: companiesViewModel.AddCompany, SimulatedDelay: simulatedDelay})
 	router.Handle("POST /company", web.Handler{Request: companiesViewModel.SaveNewCompany, SimulatedDelay: simulatedDelay})
 	router.Handle("GET /company", web.Handler{Request: companiesViewModel.CancelSaveNewCompany, SimulatedDelay: simulatedDelay})
 
-	//edit
 	router.Handle("GET /company/edit/{id}", web.Handler{Request: companiesViewModel.EditCompany, SimulatedDelay: simulatedDelay})
 	router.Handle("PUT /company/{id}", web.Handler{Request: companiesViewModel.SaveExistingCompany, SimulatedDelay: simulatedDelay})
 	router.Handle("GET /company/{id}", web.Handler{Request: companiesViewModel.CancelSaveExistingCompany, SimulatedDelay: simulatedDelay})
 
-	//delete
 	router.Handle("DELETE /company/{id}", web.Handler{Request: companiesViewModel.DeleteCompany, SimulatedDelay: simulatedDelay})
 
-	//home
 	router.Handle("GET /", web.Handler{Request: companiesViewModel.Index, SimulatedDelay: simulatedDelay})
-	//router.Handle("GET /index.html", web.Handler{Request: companiesViewModel.Index, SimulatedDelay: simulatedDelay})
 	router.Handle("GET /index", web.Handler{Request: companiesViewModel.Index, SimulatedDelay: simulatedDelay})
 
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/ui", http.StatusPermanentRedirect)
 	})
+
+	wsNotificationServer := wsNotifications.NewServer()
+	router.HandleFunc("/ws", wsNotificationServer.Handler)
 
 	server := &http.Server{
 		Handler: router,
