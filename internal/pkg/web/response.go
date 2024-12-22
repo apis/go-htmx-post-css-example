@@ -1,14 +1,13 @@
 package web
 
 import (
-	"io"
 	"net/http"
 )
 
 type Response struct {
 	Status      int
 	ContentType string
-	Content     io.Reader
+	Content     []byte
 	Headers     Headers
 }
 
@@ -21,7 +20,7 @@ func (response *Response) Write(responseWriter http.ResponseWriter) {
 			responseWriter.Header().Set(k, v)
 		}
 		responseWriter.WriteHeader(response.Status)
-		_, err := io.Copy(responseWriter, response.Content)
+		_, err := responseWriter.Write(response.Content)
 
 		if err != nil {
 			responseWriter.WriteHeader(http.StatusInternalServerError)

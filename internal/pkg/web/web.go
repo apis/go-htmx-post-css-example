@@ -13,10 +13,11 @@ func RenderResponse(status int, templates *template.Template, templateName strin
 		log.Println(err)
 		return GetEmptyResponse(http.StatusInternalServerError)
 	}
+
 	return &Response{
 		Status:      status,
 		ContentType: "text/html",
-		Content:     &buffer,
+		Content:     buffer.Bytes(),
 		Headers:     headers,
 	}
 }
@@ -28,7 +29,7 @@ func GetEmptyResponse(status int) *Response {
 func GetResponse(status int, content []byte, headers Headers) *Response {
 	return &Response{
 		Status:  status,
-		Content: bytes.NewBuffer(content),
+		Content: content,
 		Headers: headers,
 	}
 }

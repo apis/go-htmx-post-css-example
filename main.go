@@ -124,25 +124,30 @@ func startHttpServer(listener net.Listener, simulatedDelay int) *http.Server {
 
 	router.Handle(uiUrlPrefix+"*", staticAssets.Handler(embedFs, embedFsRoot, uiUrlPrefix, defaultUiUrl))
 
-	router.Handle("GET /company/add", web.Handler{Request: companiesViewModel.AddCompany, SimulatedDelay: simulatedDelay})
-	router.Handle("POST /company", web.Handler{Request: companiesViewModel.SaveNewCompany, SimulatedDelay: simulatedDelay})
-	router.Handle("GET /company", web.Handler{Request: companiesViewModel.CancelSaveNewCompany, SimulatedDelay: simulatedDelay})
+	wsNotificationServer := wsNotifications.NewServer()
+	router.HandleFunc("/company/notifications", wsNotificationServer.Handler)
 
-	router.Handle("GET /company/edit/{id}", web.Handler{Request: companiesViewModel.EditCompany, SimulatedDelay: simulatedDelay})
-	router.Handle("PUT /company/{id}", web.Handler{Request: companiesViewModel.SaveExistingCompany, SimulatedDelay: simulatedDelay})
-	router.Handle("GET /company/{id}", web.Handler{Request: companiesViewModel.CancelSaveExistingCompany, SimulatedDelay: simulatedDelay})
+	router.Handle("GET /company/add", web.Handler{Request: companiesViewModel.AddCompany,
+		NotificationServer: wsNotificationServer, SimulatedDelay: simulatedDelay})
+	router.Handle("POST /company", web.Handler{Request: companiesViewModel.SaveNewCompany,
+		NotificationServer: wsNotificationServer, SimulatedDelay: simulatedDelay})
+	router.Handle("GET /company", web.Handler{Request: companiesViewModel.CancelSaveNewCompany,
+		NotificationServer: wsNotificationServer, SimulatedDelay: simulatedDelay})
+	router.Handle("GET /company/edit/{id}", web.Handler{Request: companiesViewModel.EditCompany,
+		NotificationServer: wsNotificationServer, SimulatedDelay: simulatedDelay})
+	router.Handle("PUT /company/{id}", web.Handler{Request: companiesViewModel.SaveExistingCompany,
+		NotificationServer: wsNotificationServer, SimulatedDelay: simulatedDelay})
+	router.Handle("GET /company/{id}", web.Handler{Request: companiesViewModel.CancelSaveExistingCompany,
+		NotificationServer: wsNotificationServer, SimulatedDelay: simulatedDelay})
+	router.Handle("DELETE /company/{id}", web.Handler{Request: companiesViewModel.DeleteCompany,
+		NotificationServer: wsNotificationServer, SimulatedDelay: simulatedDelay})
 
-	router.Handle("DELETE /company/{id}", web.Handler{Request: companiesViewModel.DeleteCompany, SimulatedDelay: simulatedDelay})
-
-	router.Handle("GET /", web.Handler{Request: companiesViewModel.Index, SimulatedDelay: simulatedDelay})
-	router.Handle("GET /index", web.Handler{Request: companiesViewModel.Index, SimulatedDelay: simulatedDelay})
+	router.Handle("GET /companies", web.Handler{Request: companiesViewModel.Index,
+		NotificationServer: wsNotificationServer, SimulatedDelay: simulatedDelay})
 
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/ui", http.StatusPermanentRedirect)
+		http.Redirect(w, r, uiUrlPrefix, http.StatusPermanentRedirect)
 	})
-
-	wsNotificationServer := wsNotifications.NewServer()
-	router.HandleFunc("/ws", wsNotificationServer.Handler)
 
 	server := &http.Server{
 		Handler: router,
