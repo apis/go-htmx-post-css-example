@@ -8,6 +8,11 @@ templates](https://pkg.go.dev/html/template) on backend.
 
 Application builds single executable with all frontend code and templates embedded into it.
 
+## Change History
+
+* v0.1 - Initial implementation. 
+* v0.2 - Set of refactorings. Reduced payload and handling for some of the HTML actions. Also added dynamic UI button blocking in edit mode. Updated HTMX to v2. 
+
 ## Highlights
 
 ### Frontend dependencies

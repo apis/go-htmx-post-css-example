@@ -51,5 +51,12 @@ body {
 }
 
 .add-button {
+  margin-top: 1rem;
   margin-left: auto;
+}
+
+.disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.6;
 }

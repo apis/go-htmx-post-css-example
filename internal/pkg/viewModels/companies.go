@@ -20,56 +20,66 @@ func NewCompaniesViewModel(templates *template.Template, companies *models.Compa
 	}
 }
 
-func (instance CompaniesViewModel) Index(request *http.Request, simulatedDelay int) *web.Response {
+func (instance CompaniesViewModel) Index(request *http.Request,
+	simulatedDelay int) *web.Response {
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
+
 	return web.RenderResponse(http.StatusOK, instance.templates, "index.html", instance.companies.Companies(), nil)
 }
 
-// GET /company/add
-func (instance CompaniesViewModel) AddCompany(request *http.Request, simulatedDelay int) *web.Response {
+func (instance CompaniesViewModel) AddCompany(request *http.Request,
+	simulatedDelay int) *web.Response {
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
-	return web.RenderResponse(http.StatusOK, instance.templates, "company-add.html", instance.companies.Companies(), nil)
+
+	headers := map[string]string{"HX-Trigger-After-Swap": "{\"enterEditMode\":\"\"}"}
+	return web.RenderResponse(http.StatusOK, instance.templates, "row-add.html", nil, headers)
 }
 
-// POST /company
-func (instance CompaniesViewModel) SaveNewCompany(request *http.Request, simulatedDelay int) *web.Response {
+func (instance CompaniesViewModel) SaveNewCompany(request *http.Request,
+	simulatedDelay int) *web.Response {
 	row := models.Company{}
 
 	err := request.ParseForm()
 	if err != nil {
-		return web.GetEmptyResponse(http.StatusBadRequest)
+		return web.GetEmptyResponse(http.StatusBadRequest, nil)
 	}
 
 	row.Company = request.Form.Get("company")
 	row.Contact = request.Form.Get("contact")
 	row.Country = request.Form.Get("country")
-	instance.companies.Add(row)
+	instance.companies.Add(&row)
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
-	return web.RenderResponse(http.StatusOK, instance.templates, "companies.html", instance.companies.Companies(), nil)
+
+	headers := map[string]string{"HX-Trigger-After-Swap": "{\"exitEditMode\":\"\"}"}
+	return web.RenderResponse(http.StatusOK, instance.templates, "row.html", row, headers)
 }
 
-// GET /company
-func (instance CompaniesViewModel) CancelSaveNewCompany(request *http.Request, simulatedDelay int) *web.Response {
+func (instance CompaniesViewModel) CancelSaveNewCompany(request *http.Request,
+	simulatedDelay int) *web.Response {
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
-	return web.RenderResponse(http.StatusOK, instance.templates, "companies.html", instance.companies.Companies(), nil)
+
+	headers := map[string]string{"HX-Trigger-After-Swap": "{\"exitEditMode\":\"\"}"}
+	return web.GetEmptyResponse(http.StatusOK, headers)
 }
 
-// /GET company/edit/{id}
-func (instance CompaniesViewModel) EditCompany(request *http.Request, simulatedDelay int) *web.Response {
+func (instance CompaniesViewModel) EditCompany(request *http.Request,
+	simulatedDelay int) *web.Response {
 	id := request.PathValue("id")
 	row := instance.companies.GetByID(id)
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
-	return web.RenderResponse(http.StatusOK, instance.templates, "row-edit.html", row, nil)
+
+	headers := map[string]string{"HX-Trigger-After-Swap": "{\"enterEditMode\":\"\"}"}
+	return web.RenderResponse(http.StatusOK, instance.templates, "row-edit.html", row, headers)
 }
 
-// PUT /company/{id}
-func (instance CompaniesViewModel) SaveExistingCompany(request *http.Request, simulatedDelay int) *web.Response {
+func (instance CompaniesViewModel) SaveExistingCompany(request *http.Request,
+	simulatedDelay int) *web.Response {
 	id := request.PathValue("id")
 	row := instance.companies.GetByID(id)
 
 	err := request.ParseForm()
 	if err != nil {
-		return web.GetEmptyResponse(http.StatusBadRequest)
+		return web.GetEmptyResponse(http.StatusBadRequest, nil)
 	}
 
 	row.Company = request.Form.Get("company")
@@ -77,21 +87,26 @@ func (instance CompaniesViewModel) SaveExistingCompany(request *http.Request, si
 	row.Country = request.Form.Get("country")
 	instance.companies.Update(row)
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
-	return web.RenderResponse(http.StatusOK, instance.templates, "row.html", row, nil)
+
+	headers := map[string]string{"HX-Trigger-After-Swap": "{\"exitEditMode\":\"\"}"}
+	return web.RenderResponse(http.StatusOK, instance.templates, "row.html", row, headers)
 }
 
-// GET /company/{id}
-func (instance CompaniesViewModel) CancelSaveExistingCompany(request *http.Request, simulatedDelay int) *web.Response {
+func (instance CompaniesViewModel) CancelSaveExistingCompany(request *http.Request,
+	simulatedDelay int) *web.Response {
 	id := request.PathValue("id")
 	row := instance.companies.GetByID(id)
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
-	return web.RenderResponse(http.StatusOK, instance.templates, "row.html", row, nil)
+
+	headers := map[string]string{"HX-Trigger-After-Swap": "{\"exitEditMode\":\"\"}"}
+	return web.RenderResponse(http.StatusOK, instance.templates, "row.html", row, headers)
 }
 
-// DELETE /company/{id}
-func (instance CompaniesViewModel) DeleteCompany(request *http.Request, simulatedDelay int) *web.Response {
+func (instance CompaniesViewModel) DeleteCompany(request *http.Request,
+	simulatedDelay int) *web.Response {
 	id := request.PathValue("id")
 	instance.companies.Delete(id)
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
-	return web.RenderResponse(http.StatusOK, instance.templates, "companies.html", instance.companies.Companies(), nil)
+
+	return web.GetEmptyResponse(http.StatusOK, nil)
 }
