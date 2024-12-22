@@ -11,7 +11,7 @@ func RenderResponse(status int, templates *template.Template, templateName strin
 	var buffer bytes.Buffer
 	if err := templates.ExecuteTemplate(&buffer, templateName, data); err != nil {
 		log.Println(err)
-		return GetEmptyResponse(http.StatusInternalServerError)
+		return GetEmptyResponse(http.StatusInternalServerError, nil)
 	}
 
 	return &Response{
@@ -22,8 +22,8 @@ func RenderResponse(status int, templates *template.Template, templateName strin
 	}
 }
 
-func GetEmptyResponse(status int) *Response {
-	return GetResponse(status, []byte(""), nil)
+func GetEmptyResponse(status int, headers Headers) *Response {
+	return GetResponse(status, []byte(""), headers)
 }
 
 func GetResponse(status int, content []byte, headers Headers) *Response {
