@@ -94,6 +94,5 @@ func (instance CompaniesViewModel) DeleteCompany(request *http.Request,
 	id := request.PathValue("id")
 	instance.companies.Delete(id)
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
-	//return web.RenderResponse(http.StatusOK, instance.templates, "companies.html", instance.companies.Companies(), nil)
 	return web.GetEmptyResponse(http.StatusOK)
 }
