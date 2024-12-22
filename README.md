@@ -10,8 +10,8 @@ Application builds single executable with all frontend code and templates embedd
 
 ## Change History
 
-* Ver. 0.1 - initial implementation 
-* Ver. 0.2 - set of refactorings. Reduced payload and handling for some of the HTML actions. Also added dynamic UI button blocking in edit mode. 
+* v0.1 - Initial implementation. 
+* v0.2 - Set of refactorings. Reduced payload and handling for some of the HTML actions. Also added dynamic UI button blocking in edit mode. Updated HTMX to v2. 
 
 ## Highlights
 
