@@ -1,6 +1,3 @@
-<tbody id="table-body">
-  {{ template "row-add.html" . }}
-	{{range .}}
-		{{ template "row.html". }}
-	{{end}}
+<tbody id="table-body" hx-swap-oob="beforeend">
+	{{ template "row.html". }}
 </tbody>

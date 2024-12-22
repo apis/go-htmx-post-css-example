@@ -32,7 +32,7 @@ func (instance CompaniesViewModel) AddCompany(request *http.Request,
 	notificationServer wsNotifications.WsNotificationServer,
 	simulatedDelay int) *web.Response {
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
-	return web.RenderResponse(http.StatusOK, instance.templates, "company-add.html", instance.companies.Companies(), nil)
+	return web.RenderResponse(http.StatusOK, instance.templates, "row-add.html", nil, nil)
 }
 
 func (instance CompaniesViewModel) SaveNewCompany(request *http.Request,
@@ -48,11 +48,12 @@ func (instance CompaniesViewModel) SaveNewCompany(request *http.Request,
 	row.Company = request.Form.Get("company")
 	row.Contact = request.Form.Get("contact")
 	row.Country = request.Form.Get("country")
-	instance.companies.Add(row)
+	instance.companies.Add(&row)
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
-	response := web.RenderResponse(http.StatusOK, instance.templates, "companies.html", instance.companies.Companies(), nil)
+	response := web.RenderResponse(http.StatusOK, instance.templates, "company-add.html", row, nil)
 	notificationServer.Publish(response.Content)
-	return response
+	//return web.RenderResponse(http.StatusOK, instance.templates, "row.html", row, nil)
+	return web.GetEmptyResponse(http.StatusOK)
 }
 
 func (instance CompaniesViewModel) CancelSaveNewCompany(request *http.Request,
@@ -105,5 +106,6 @@ func (instance CompaniesViewModel) DeleteCompany(request *http.Request,
 	id := request.PathValue("id")
 	instance.companies.Delete(id)
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
-	return web.RenderResponse(http.StatusOK, instance.templates, "companies.html", instance.companies.Companies(), nil)
+	//return web.RenderResponse(http.StatusOK, instance.templates, "companies.html", instance.companies.Companies(), nil)
+	return web.GetEmptyResponse(http.StatusOK)
 }

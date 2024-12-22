@@ -18,7 +18,8 @@
   <td>
     <a
       hx-delete="/company/{{.ID}}"
-      hx-target="#companies"
+      hx-target="closest tr"
+      hx-swap="delete"
       hx-confirm="Are you sure you want to delete {{.Company}}?"
       hx-indicator="#loading"
       class="button-small-light"

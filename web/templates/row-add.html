@@ -28,7 +28,8 @@
   <td>
     <a
       hx-post="/company"
-      hx-target="#companies"
+      hx-target="closest tr"
+      hx-swap="delete"
       hx-indicator="#loading"
       hx-include="input[data-include-add]"
       class="button-small"
@@ -38,8 +39,9 @@
   </td>
   <td>
     <a
-      hx-get="/company"
-      hx-target="#companies"
+      hx-get="data:text/html,"
+      hx-target="closest tr"
+      hx-swap="delete"
       hx-indicator="#loading"
       class="button-small"
       href=""

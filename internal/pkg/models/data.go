@@ -69,7 +69,7 @@ func (c *Companies) Update(company Company) {
 	c.companies = result
 }
 
-func (c *Companies) Add(company Company) {
+func (c *Companies) Add(company *Company) {
 	max := 0
 	for _, i := range c.companies {
 		n, _ := strconv.Atoi(i.ID)
@@ -80,8 +80,9 @@ func (c *Companies) Add(company Company) {
 	max++
 	id := strconv.Itoa(max)
 
+	company.ID = id
 	c.companies = append(c.companies, Company{
-		ID:      id,
+		ID:      company.ID,
 		Company: company.Company,
 		Contact: company.Contact,
 		Country: company.Country,

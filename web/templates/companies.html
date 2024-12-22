@@ -1,19 +1,4 @@
 <div id="companies">
-  <div class="add-box">
-    <div class="add-button">
-      <button
-        class="button"
-        role="button"
-        hx-get="/company/add"
-        hx-target="#table-body"
-        hx-swap="outerHTML"
-        hx-indicator="#loading"
-        href=""
-      >
-        Add
-      </button>
-    </div>
-  </div>
   <table>
     <thead>
       <tr>
@@ -29,4 +14,19 @@
       {{end}}
     </tbody>
   </table>
+  <div class="add-box">
+    <div class="add-button">
+      <button
+              class="button"
+              role="button"
+              hx-get="/company/add"
+              hx-target="#table-body"
+              hx-swap="beforeend"
+              hx-indicator="#loading"
+              href=""
+      >
+        Append
+      </button>
+    </div>
+  </div>
 </div>
