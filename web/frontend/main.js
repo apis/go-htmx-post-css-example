@@ -1,3 +1,3 @@
-import './htmx.js'
-import 'htmx.org/dist/ext/ws.js'
+import htmx from 'htmx.org'
+window.htmx = htmx
 import './style.css'

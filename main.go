@@ -6,7 +6,6 @@ import (
 	"htmx-example/internal/pkg/staticAssets"
 	"htmx-example/internal/pkg/viewModels"
 	"htmx-example/internal/pkg/web"
-	"htmx-example/internal/pkg/wsNotifications"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
@@ -124,26 +123,23 @@ func startHttpServer(listener net.Listener, simulatedDelay int) *http.Server {
 
 	router.Handle(uiUrlPrefix+"*", staticAssets.Handler(embedFs, embedFsRoot, uiUrlPrefix, defaultUiUrl))
 
-	wsNotificationServer := wsNotifications.NewServer()
-	router.HandleFunc("/company/notifications", wsNotificationServer.Handler)
-
 	router.Handle("GET /company/add", web.Handler{Request: companiesViewModel.AddCompany,
-		NotificationServer: wsNotificationServer, SimulatedDelay: simulatedDelay})
+		SimulatedDelay: simulatedDelay})
 	router.Handle("POST /company", web.Handler{Request: companiesViewModel.SaveNewCompany,
-		NotificationServer: wsNotificationServer, SimulatedDelay: simulatedDelay})
+		SimulatedDelay: simulatedDelay})
 	router.Handle("GET /company", web.Handler{Request: companiesViewModel.CancelSaveNewCompany,
-		NotificationServer: wsNotificationServer, SimulatedDelay: simulatedDelay})
+		SimulatedDelay: simulatedDelay})
 	router.Handle("GET /company/edit/{id}", web.Handler{Request: companiesViewModel.EditCompany,
-		NotificationServer: wsNotificationServer, SimulatedDelay: simulatedDelay})
+		SimulatedDelay: simulatedDelay})
 	router.Handle("PUT /company/{id}", web.Handler{Request: companiesViewModel.SaveExistingCompany,
-		NotificationServer: wsNotificationServer, SimulatedDelay: simulatedDelay})
+		SimulatedDelay: simulatedDelay})
 	router.Handle("GET /company/{id}", web.Handler{Request: companiesViewModel.CancelSaveExistingCompany,
-		NotificationServer: wsNotificationServer, SimulatedDelay: simulatedDelay})
+		SimulatedDelay: simulatedDelay})
 	router.Handle("DELETE /company/{id}", web.Handler{Request: companiesViewModel.DeleteCompany,
-		NotificationServer: wsNotificationServer, SimulatedDelay: simulatedDelay})
+		SimulatedDelay: simulatedDelay})
 
 	router.Handle("GET /companies", web.Handler{Request: companiesViewModel.Index,
-		NotificationServer: wsNotificationServer, SimulatedDelay: simulatedDelay})
+		SimulatedDelay: simulatedDelay})
 
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, uiUrlPrefix, http.StatusPermanentRedirect)
