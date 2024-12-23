@@ -13,7 +13,7 @@
     "postcss": "^8.4.49",
     "postcss-import": "^16.1.0",
     "postcss-inherit": "^4.1.0",
-    "vite": "^6.0.3"
+    "vite": "^6.0.5"
   },
   "dependencies": {
     "htmx.org": "^2.0.4"

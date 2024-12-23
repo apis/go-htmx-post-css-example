@@ -1,16 +1,17 @@
 package web
 
 import (
+	"github.com/rs/zerolog/log"
+
 	"bytes"
 	"html/template"
-	"log"
 	"net/http"
 )
 
 func RenderResponse(status int, templates *template.Template, templateName string, data any, headers Headers) *Response {
 	var buffer bytes.Buffer
 	if err := templates.ExecuteTemplate(&buffer, templateName, data); err != nil {
-		log.Println(err)
+		log.Error().Err(err).Str("template_name", templateName).Msg("templates.ExecuteTemplate() failed")
 		return GetEmptyResponse(http.StatusInternalServerError, nil)
 	}
 

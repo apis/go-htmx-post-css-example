@@ -82,7 +82,7 @@ func main() {
 func startHttpServer(listener net.Listener, simulatedDelay int) *http.Server {
 	templates, err := web.TemplateParseFSRecursive(templateFS, templatesDir, ".html", nil)
 	if err != nil {
-		panic(err)
+		log.Panic().Err(err).Msg("template parsing failed")
 	}
 
 	companies := models.NewCompanies()
@@ -96,20 +96,7 @@ func startHttpServer(listener net.Listener, simulatedDelay int) *http.Server {
 		JSON:     true,
 		Concise:  true,
 		//RequestHeaders:   true,
-		// ResponseHeaders:  true,
-		//MessageFieldName: "message",
-		//LevelFieldName:   "severity",
-		//TimeFieldFormat:  time.RFC3339,
-		//Tags: map[string]string{
-		//	"version": "v1.0-81aa4244d9fc8076a",
-		//	"env":     "dev",
-		//},
-		//QuietDownRoutes: []string{
-		//	"/",
-		//	"/ping",
-		//},
-		//QuietDownPeriod: 10 * time.Second,
-		//// SourceFieldName: "source",
+		//ResponseHeaders:  true,
 	})
 
 	router := chi.NewRouter()
