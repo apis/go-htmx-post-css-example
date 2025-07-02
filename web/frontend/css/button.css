@@ -1,8 +1,8 @@
 .button {
-    background-image: linear-gradient(-180deg, #37AEE2 0%, #1E96C8 100%);
+    background-color: var(--button-background);
     border-radius: .5rem;
     box-sizing: border-box;
-    color: #FFFFFF;
+    color: var(--button-text);
     display: flex;
     font-size: 16px;
     justify-content: center;
@@ -18,7 +18,7 @@
 
 .button:hover,
 .button-small:hover {
-    background-image: linear-gradient(-180deg, #1D95C9 0%, #17759C 100%);
+    background-color: var(--button-hover-background);
 }
 
 .button-small {

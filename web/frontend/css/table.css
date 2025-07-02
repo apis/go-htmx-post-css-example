@@ -8,11 +8,16 @@
     font-family: Helvetica, Arial, sans-serif;
     font-size: 1.1rem;
     font-weight: 100;
+    background-color: var(--table-header-background);
 }
 
 #companies > table > thead > tr,
 #companies > table > tbody > tr {
-    border-bottom: 1px solid #919191;
+    border-bottom: 1px solid var(--table-border-color);
+}
+
+#companies > table > tbody > tr:hover {
+    background-color: var(--table-row-hover);
 }
 
 #companies > table > thead > tr > th,
@@ -69,10 +74,11 @@
 #companies > table > tbody > tr > td > input {
     flex: 1;
     height: 1.5rem;
-    border: 1px solid #eaeaea;
+    border: 1px solid var(--input-border);
     border-radius: 3px;
     font-family: Helvetica, Arial, sans-serif;
     font-weight: 100;
     font-size: 1rem;
-    background-color : #4e4e4e;
+    background-color: var(--input-background);
+    color: var(--input-text);
 }

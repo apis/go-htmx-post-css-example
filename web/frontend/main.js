@@ -25,3 +25,10 @@ document.body.addEventListener("exitEditMode", function(evt){
     removeClass(htmx.findAll('#table-body .button-edit'), 'disabled')
     removeClass(htmx.findAll('#table-body .button-delete'), 'disabled')
 })
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const themeSwitcher = document.getElementById('theme-switcher');
+    themeSwitcher.addEventListener('change', function() {
+        document.documentElement.setAttribute('data-theme', this.value);
+    });
+});
