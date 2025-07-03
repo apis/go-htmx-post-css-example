@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/logo.webp" />
@@ -7,6 +7,12 @@
     <title>Go + HTMX + PostCSS Example</title>
   </head>
   <body>
+    <div class="theme-selector">
+        <select id="theme-switcher">
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+        </select>
+    </div>
     <div id="loading" class="htmx-indicator" style="opacity:0;">
       <div class="loader-box">
         <div class="loader"></div>

@@ -1,0 +1,28 @@
+/* themes.css */
+:root {
+    --background-color: #111827;
+    --text-color: #d1d5db;
+    --table-header-background: #1f2937;
+    --table-border-color: #374151;
+    --table-row-hover: #374151;
+    --button-background: #374151;
+    --button-text: #ffffff;
+    --button-hover-background: #1f2937;
+    --input-background: #1f2937;
+    --input-border: #374151;
+    --input-text: #ffffff;
+}
+
+[data-theme="light"] {
+    --background-color: #f9fafb;
+    --text-color: #1f2937;
+    --table-header-background: #e5e7eb;
+    --table-border-color: #d1d5db;
+    --table-row-hover: #f3f4f6;
+    --button-background: #d1d5db;
+    --button-text: #1f2937;
+    --button-hover-background: #e5e7eb;
+    --input-background: #ffffff;
+    --input-border: #d1d5db;
+    --input-text: #1f2937;
+}

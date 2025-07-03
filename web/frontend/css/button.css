@@ -1,12 +1,12 @@
 .button {
-    background-image: linear-gradient(-180deg, #37AEE2 0%, #1E96C8 100%);
+    background-color: var(--button-background);
     border-radius: .5rem;
     box-sizing: border-box;
-    color: #FFFFFF;
+    color: var(--button-text);
     display: flex;
-    font-size: 16px;
+    font-size: 1rem;
     justify-content: center;
-    padding: 0.5rem 1.75rem;
+    padding: 0.75rem 1.5rem;
     text-decoration: none;
     width: 100%;
     border: 0;
@@ -14,18 +14,19 @@
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
+    transition: background-color 0.2s ease-in-out;
 }
 
 .button:hover,
 .button-small:hover {
-    background-image: linear-gradient(-180deg, #1D95C9 0%, #17759C 100%);
+    background-color: var(--button-hover-background);
 }
 
 .button-small {
     @inherit: .button;
 
-    font-size: 12px;
-    padding: 0.3rem 1rem;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
 }
 
 .button-small-light {
