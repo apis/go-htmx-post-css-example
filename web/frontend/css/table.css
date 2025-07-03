@@ -1,5 +1,5 @@
 #companies > table {
-    table-layout: fixed;
+    table-layout: auto;
     width: 100%;
     border-collapse: collapse;
 }
@@ -25,25 +25,7 @@
     padding: 1rem 1.5rem;
 }
 
-#companies > table > thead th:nth-child(1) {
-    width: 5%;
-    text-align: center;
-}
 
-#companies > table > thead th:nth-child(2) {
-    width: 25%;
-    text-align: left;
-}
-
-#companies > table > thead th:nth-child(3) {
-    width: 25%;
-    text-align: left;
-}
-
-#companies > table > thead th:nth-child(4) {
-    width: 25%;
-    text-align: left;
-}
 
 #companies > table > tbody td:nth-child(1) {
     text-align: center;
@@ -81,4 +63,14 @@
     background-color: var(--input-background);
     color: var(--input-text);
     padding: 0 0.5rem;
+}
+
+#companies > table > tbody > tr > td:last-child, #companies > table > thead > tr > th:last-child {
+    width: 1%;
+    white-space: nowrap;
+}
+
+#companies > table > tbody > tr > td:last-child {
+    display: flex;
+    gap: 0.5rem;
 }
