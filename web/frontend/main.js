@@ -28,7 +28,12 @@ document.body.addEventListener("exitEditMode", function(evt){
 
 document.addEventListener('DOMContentLoaded', (event) => {
     const themeSwitcher = document.getElementById('theme-switcher');
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    themeSwitcher.value = currentTheme;
+
     themeSwitcher.addEventListener('change', function() {
         document.documentElement.setAttribute('data-theme', this.value);
+        localStorage.setItem('theme', this.value);
     });
 });
