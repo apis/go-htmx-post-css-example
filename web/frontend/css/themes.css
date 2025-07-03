@@ -1,28 +1,28 @@
 /* themes.css */
 :root {
-    --background-color: #1a202c;
-    --text-color: #cbd5e0;
-    --table-header-background: #2d3748;
-    --table-border-color: #4a5568;
-    --table-row-hover: #4a5568;
-    --button-background: #4a5568;
+    --background-color: #111827;
+    --text-color: #d1d5db;
+    --table-header-background: #1f2937;
+    --table-border-color: #374151;
+    --table-row-hover: #374151;
+    --button-background: #374151;
     --button-text: #ffffff;
-    --button-hover-background: #2d3748;
-    --input-background: #2d3748;
-    --input-border: #4a5568;
+    --button-hover-background: #1f2937;
+    --input-background: #1f2937;
+    --input-border: #374151;
     --input-text: #ffffff;
 }
 
 [data-theme="light"] {
-    --background-color: #ffffff;
-    --text-color: #2d3748;
-    --table-header-background: #edf2f7;
-    --table-border-color: #e2e8f0;
-    --table-row-hover: #f7fafc;
-    --button-background: #edf2f7;
-    --button-text: #1a202c;
-    --button-hover-background: #e2e8f0;
+    --background-color: #f9fafb;
+    --text-color: #1f2937;
+    --table-header-background: #e5e7eb;
+    --table-border-color: #d1d5db;
+    --table-row-hover: #f3f4f6;
+    --button-background: #d1d5db;
+    --button-text: #1f2937;
+    --button-hover-background: #e5e7eb;
     --input-background: #ffffff;
-    --input-border: #e2e8f0;
-    --input-text: #1a202c;
+    --input-border: #d1d5db;
+    --input-text: #1f2937;
 }
