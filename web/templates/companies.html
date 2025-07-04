@@ -2,16 +2,66 @@
   <table>
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Company</th>
-        <th scope="col">Contact</th>
-        <th scope="col">Country</th>
-        <th scope="col">Employees</th>
+        <th scope="col">
+          {{if eq .SortColumn "ID"}}
+            {{if eq .SortDir "asc"}}
+              <a href="#" hx-get="/companies?sort=ID&dir=desc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading"># ▲</a>
+            {{else}}
+              <a href="#" hx-get="/companies?sort=ID&dir=asc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading"># ▼</a>
+            {{end}}
+          {{else}}
+            <a href="#" hx-get="/companies?sort=ID&dir=asc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">#</a>
+          {{end}}
+        </th>
+        <th scope="col">
+          {{if eq .SortColumn "Company"}}
+            {{if eq .SortDir "asc"}}
+              <a href="#" hx-get="/companies?sort=Company&dir=desc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Company ▲</a>
+            {{else}}
+              <a href="#" hx-get="/companies?sort=Company&dir=asc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Company ▼</a>
+            {{end}}
+          {{else}}
+            <a href="#" hx-get="/companies?sort=Company&dir=asc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Company</a>
+          {{end}}
+        </th>
+        <th scope="col">
+          {{if eq .SortColumn "Contact"}}
+            {{if eq .SortDir "asc"}}
+              <a href="#" hx-get="/companies?sort=Contact&dir=desc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Contact ▲</a>
+            {{else}}
+              <a href="#" hx-get="/companies?sort=Contact&dir=asc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Contact ▼</a>
+            {{end}}
+          {{else}}
+            <a href="#" hx-get="/companies?sort=Contact&dir=asc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Contact</a>
+          {{end}}
+        </th>
+        <th scope="col">
+          {{if eq .SortColumn "Country"}}
+            {{if eq .SortDir "asc"}}
+              <a href="#" hx-get="/companies?sort=Country&dir=desc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Country ▲</a>
+            {{else}}
+              <a href="#" hx-get="/companies?sort=Country&dir=asc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Country ▼</a>
+            {{end}}
+          {{else}}
+            <a href="#" hx-get="/companies?sort=Country&dir=asc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Country</a>
+          {{end}}
+        </th>
+        <th scope="col">
+          {{if eq .SortColumn "Employees"}}
+            {{if eq .SortDir "asc"}}
+              <a href="#" hx-get="/companies?sort=Employees&dir=desc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Employees ▲</a>
+            {{else}}
+              <a href="#" hx-get="/companies?sort=Employees&dir=asc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Employees ▼</a>
+            {{end}}
+          {{else}}
+            <a href="#" hx-get="/companies?sort=Employees&dir=asc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Employees</a>
+          {{end}}
+        </th>
         <th scope="col">Actions</th>
       </tr>
     </thead>
     <tbody id="table-body">
-      {{range .}}
+      {{range .Companies}}
         {{ template "row.html". }}
       {{end}}
     </tbody>

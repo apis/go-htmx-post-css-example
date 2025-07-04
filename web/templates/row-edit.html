@@ -1,36 +1,36 @@
-<tr id="datarow-{{.ID}}">
-  <td>{{.ID}}</td>
+<tr id="datarow-{{.Company.ID}}">
+  <td>{{.OrdinalID}}</td>
   <td>
     <input
       type="text"
-      data-include-edit="{{.ID}}"
+      data-include-edit="{{.Company.ID}}"
       name="company"
-      value="{{.Company}}"
+      value="{{.Company.Company}}"
       autofocus
     />
   </td>
   <td>
     <input
       type="text"
-      data-include-edit="{{.ID}}"
+      data-include-edit="{{.Company.ID}}"
       name="contact"
-      value="{{.Contact}}"
+      value="{{.Company.Contact}}"
     />
   </td>
   <td>
     <input
       type="text"
-      data-include-edit="{{.ID}}"
+      data-include-edit="{{.Company.ID}}"
       name="country"
-      value="{{.Country}}"
+      value="{{.Company.Country}}"
     />
   </td>
   <td>
     <input
       type="number"
-      data-include-edit="{{.ID}}"
+      data-include-edit="{{.Company.ID}}"
       name="employees"
-      value="{{.Employees}}"
+      value="{{.Company.Employees}}"
       min="1"
       required
     />
@@ -39,18 +39,18 @@
     <a
       class="button-small-light"
       href=""
-      hx-put="/company/{{.ID}}"
-      hx-target="#datarow-{{.ID}}"
+      hx-put="/company/{{.Company.ID}}"
+      hx-target="#datarow-{{.Company.ID}}"
       hx-swap="outerHTML"
       hx-indicator="#loading"
-      hx-include="input[data-include-edit='{{.ID}}']"
+      hx-include="input[data-include-edit='{{.Company.ID}}']"
       >Save</a
     >
     <a
       class="button-small-light"
       href=""
-      hx-get="/company/{{.ID}}"
-      hx-target="#datarow-{{.ID}}"
+      hx-get="/company/{{.Company.ID}}"
+      hx-target="#datarow-{{.Company.ID}}"
       hx-swap="outerHTML"
       hx-indicator="#loading"
       >Cancel</a
