@@ -124,8 +124,9 @@ func startHttpServer(listener net.Listener, simulatedDelay int) *http.Server {
 		SimulatedDelay: simulatedDelay})
 	router.Handle("DELETE /company/{id}", web.Handler{Request: companiesViewModel.DeleteCompany,
 		SimulatedDelay: simulatedDelay})
-
-	router.Handle("GET /companies", web.Handler{Request: companiesViewModel.Index,
+	router.Handle("GET /companies", web.Handler{Request: companiesViewModel.Companies,
+		SimulatedDelay: simulatedDelay})
+	router.Handle("GET /index", web.Handler{Request: companiesViewModel.Index,
 		SimulatedDelay: simulatedDelay})
 
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
