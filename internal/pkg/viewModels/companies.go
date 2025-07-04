@@ -3,20 +3,21 @@ package viewModels
 import (
 	"html/template"
 	"htmx-example/internal/pkg/models"
+	"htmx-example/internal/pkg/storage"
 	"htmx-example/internal/pkg/web"
 	"net/http"
 	"time"
 )
 
 type CompaniesViewModel struct {
-	templates *template.Template
-	companies *models.Companies
+	templates   *template.Template
+	jsonStorage *storage.JsonStorage
 }
 
-func NewCompaniesViewModel(templates *template.Template, companies *models.Companies) *CompaniesViewModel {
+func NewCompaniesViewModel(templates *template.Template, jsonStorage *storage.JsonStorage) *CompaniesViewModel {
 	return &CompaniesViewModel{
-		templates: templates,
-		companies: companies,
+		templates:   templates,
+		jsonStorage: jsonStorage,
 	}
 }
 
@@ -24,7 +25,12 @@ func (instance CompaniesViewModel) Index(request *http.Request,
 	simulatedDelay int) *web.Response {
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
 
-	return web.RenderResponse(http.StatusOK, instance.templates, "index.html", instance.companies.Companies(), nil)
+	companies, err := instance.jsonStorage.Read()
+	if err != nil {
+		return web.GetEmptyResponse(http.StatusInternalServerError, nil)
+	}
+
+	return web.RenderResponse(http.StatusOK, instance.templates, "index.html", companies.All(), nil)
 }
 
 func (instance CompaniesViewModel) AddCompany(request *http.Request,
@@ -47,7 +53,21 @@ func (instance CompaniesViewModel) SaveNewCompany(request *http.Request,
 	row.Company = request.Form.Get("company")
 	row.Contact = request.Form.Get("contact")
 	row.Country = request.Form.Get("country")
-	instance.companies.Add(&row)
+	row.Employees = request.Form.Get("employees")
+	row.Employees = request.Form.Get("employees")
+
+	companies, err := instance.jsonStorage.Read()
+	if err != nil {
+		return web.GetEmptyResponse(http.StatusInternalServerError, nil)
+	}
+
+	companies.Add(&row)
+
+	err = instance.jsonStorage.Write(companies)
+	if err != nil {
+		return web.GetEmptyResponse(http.StatusInternalServerError, nil)
+	}
+
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
 
 	headers := map[string]string{"HX-Trigger-After-Swap": "{\"exitEditMode\":\"\"}"}
@@ -65,7 +85,13 @@ func (instance CompaniesViewModel) CancelSaveNewCompany(request *http.Request,
 func (instance CompaniesViewModel) EditCompany(request *http.Request,
 	simulatedDelay int) *web.Response {
 	id := request.PathValue("id")
-	row := instance.companies.GetByID(id)
+
+	companies, err := instance.jsonStorage.Read()
+	if err != nil {
+		return web.GetEmptyResponse(http.StatusInternalServerError, nil)
+	}
+
+	row := companies.GetByID(id)
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
 
 	headers := map[string]string{"HX-Trigger-After-Swap": "{\"enterEditMode\":\"\"}"}
@@ -75,9 +101,15 @@ func (instance CompaniesViewModel) EditCompany(request *http.Request,
 func (instance CompaniesViewModel) SaveExistingCompany(request *http.Request,
 	simulatedDelay int) *web.Response {
 	id := request.PathValue("id")
-	row := instance.companies.GetByID(id)
 
-	err := request.ParseForm()
+	companies, err := instance.jsonStorage.Read()
+	if err != nil {
+		return web.GetEmptyResponse(http.StatusInternalServerError, nil)
+	}
+
+	row := companies.GetByID(id)
+
+	err = request.ParseForm()
 	if err != nil {
 		return web.GetEmptyResponse(http.StatusBadRequest, nil)
 	}
@@ -85,7 +117,14 @@ func (instance CompaniesViewModel) SaveExistingCompany(request *http.Request,
 	row.Company = request.Form.Get("company")
 	row.Contact = request.Form.Get("contact")
 	row.Country = request.Form.Get("country")
-	instance.companies.Update(row)
+	row.Employees = request.Form.Get("employees")
+	companies.Update(row)
+
+	err = instance.jsonStorage.Write(companies)
+	if err != nil {
+		return web.GetEmptyResponse(http.StatusInternalServerError, nil)
+	}
+
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
 
 	headers := map[string]string{"HX-Trigger-After-Swap": "{\"exitEditMode\":\"\"}"}
@@ -95,7 +134,13 @@ func (instance CompaniesViewModel) SaveExistingCompany(request *http.Request,
 func (instance CompaniesViewModel) CancelSaveExistingCompany(request *http.Request,
 	simulatedDelay int) *web.Response {
 	id := request.PathValue("id")
-	row := instance.companies.GetByID(id)
+
+	companies, err := instance.jsonStorage.Read()
+	if err != nil {
+		return web.GetEmptyResponse(http.StatusInternalServerError, nil)
+	}
+
+	row := companies.GetByID(id)
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
 
 	headers := map[string]string{"HX-Trigger-After-Swap": "{\"exitEditMode\":\"\"}"}
@@ -105,7 +150,19 @@ func (instance CompaniesViewModel) CancelSaveExistingCompany(request *http.Reque
 func (instance CompaniesViewModel) DeleteCompany(request *http.Request,
 	simulatedDelay int) *web.Response {
 	id := request.PathValue("id")
-	instance.companies.Delete(id)
+
+	companies, err := instance.jsonStorage.Read()
+	if err != nil {
+		return web.GetEmptyResponse(http.StatusInternalServerError, nil)
+	}
+
+	companies.Delete(id)
+
+	err = instance.jsonStorage.Write(companies)
+	if err != nil {
+		return web.GetEmptyResponse(http.StatusInternalServerError, nil)
+	}
+
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
 
 	return web.GetEmptyResponse(http.StatusOK, nil)

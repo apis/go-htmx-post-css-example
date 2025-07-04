@@ -5,49 +5,28 @@ import (
 )
 
 type Company struct {
-	ID      string
-	Company string
-	Contact string
-	Country string
+	ID        string
+	Company   string
+	Contact   string
+	Country   string
+	Employees string
 }
 
 type Companies struct {
-	companies []Company
+	Companies []Company `json:"companies"`
 }
 
 func NewCompanies() *Companies {
-	data := &Companies{
-		companies: []Company{
-			{
-				ID:      "1",
-				Company: "Amazon",
-				Contact: "Jeff Bezos",
-				Country: "United States",
-			},
-			{
-				ID:      "2",
-				Company: "Apple",
-				Contact: "Tim Cook",
-				Country: "United States",
-			},
-			{
-				ID:      "3",
-				Company: "Microsoft",
-				Contact: "Satya Nadella",
-				Country: "United States",
-			},
-		},
-	}
-	return data
+	return &Companies{}
 }
 
-func (c *Companies) Companies() []Company {
-	return c.companies
+func (c *Companies) All() []Company {
+	return c.Companies
 }
 
 func (c *Companies) GetByID(id string) Company {
 	var result Company
-	for _, i := range c.companies {
+	for _, i := range c.Companies {
 		if i.ID == id {
 			result = i
 			break
@@ -58,20 +37,21 @@ func (c *Companies) GetByID(id string) Company {
 
 func (c *Companies) Update(company Company) {
 	var result []Company
-	for _, i := range c.companies {
+	for _, i := range c.Companies {
 		if i.ID == company.ID {
 			i.Company = company.Company
 			i.Contact = company.Contact
 			i.Country = company.Country
+			i.Employees = company.Employees
 		}
 		result = append(result, i)
 	}
-	c.companies = result
+	c.Companies = result
 }
 
 func (c *Companies) Add(company *Company) {
 	max := 0
-	for _, i := range c.companies {
+	for _, i := range c.Companies {
 		n, _ := strconv.Atoi(i.ID)
 		if n > max {
 			max = n
@@ -81,20 +61,21 @@ func (c *Companies) Add(company *Company) {
 	id := strconv.Itoa(max)
 
 	company.ID = id
-	c.companies = append(c.companies, Company{
-		ID:      company.ID,
-		Company: company.Company,
-		Contact: company.Contact,
-		Country: company.Country,
+	c.Companies = append(c.Companies, Company{
+		ID:        company.ID,
+		Company:   company.Company,
+		Contact:   company.Contact,
+		Country:   company.Country,
+		Employees: company.Employees,
 	})
 }
 
 func (c *Companies) Delete(id string) {
 	var result []Company
-	for _, i := range c.companies {
+	for _, i := range c.Companies {
 		if i.ID != id {
 			result = append(result, i)
 		}
 	}
-	c.companies = result
+	c.Companies = result
 }

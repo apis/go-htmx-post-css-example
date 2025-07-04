@@ -2,8 +2,8 @@ package main
 
 import (
 	"htmx-example/internal/pkg/config"
-	"htmx-example/internal/pkg/models"
 	"htmx-example/internal/pkg/staticAssets"
+	"htmx-example/internal/pkg/storage"
 	"htmx-example/internal/pkg/viewModels"
 	"htmx-example/internal/pkg/web"
 
@@ -85,8 +85,8 @@ func startHttpServer(listener net.Listener, simulatedDelay int) *http.Server {
 		log.Panic().Err(err).Msg("template parsing failed")
 	}
 
-	companies := models.NewCompanies()
-	companiesViewModel := viewModels.NewCompaniesViewModel(templates, companies)
+	jsonStorage := storage.NewJsonStorage("./data/companies.json")
+	companiesViewModel := viewModels.NewCompaniesViewModel(templates, jsonStorage)
 
 	logger := slog.New(slog.NewJSONHandler(os.Stderr, nil))
 	slog.SetDefault(logger)

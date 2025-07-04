@@ -1,0 +1,25 @@
+{
+  "companies": [
+    {
+      "ID": "1",
+      "Company": "Amazon",
+      "Contact": "Jeff Bezos",
+      "Country": "United States",
+      "Employees": "100000"
+    },
+    {
+      "ID": "2",
+      "Company": "Apple",
+      "Contact": "Tim Cook",
+      "Country": "United States",
+      "Employees": "3000000"
+    },
+    {
+      "ID": "3",
+      "Company": "Microsoft",
+      "Contact": "Satya Nadella",
+      "Country": "United States",
+      "Employees": "1000"
+    }
+  ]
+}
