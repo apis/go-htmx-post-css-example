@@ -1,6 +1,6 @@
-<tr id="datarow-add">
-  <td></td>
-  <td>
+<div class="flex-row" id="datarow-add">
+  <div class="flex-cell flex-cell-id"></div>
+  <div class="flex-cell flex-cell-company">
     <input
       type="text"
       data-include-add=""
@@ -8,24 +8,24 @@
       value=""
       autofocus
     />
-  </td>
-  <td>
+  </div>
+  <div class="flex-cell flex-cell-contact">
     <input
       type="text"
       data-include-add=""
       name="contact"
       value=""
     />
-  </td>
-  <td>
+  </div>
+  <div class="flex-cell flex-cell-country">
     <input
       type="text"
       data-include-add=""
       name="country"
       value=""
     />
-  </td>
-  <td>
+  </div>
+  <div class="flex-cell flex-cell-employees">
     <input
       type="number"
       data-include-add=""
@@ -34,13 +34,13 @@
       min="1"
       required
     />
-  </td>
-  <td>
+  </div>
+  <div class="flex-cell flex-cell-actions">
     <a
       class="button-small-light"
       href=""
       hx-post="/company"
-      hx-target="closest tr"
+      hx-target="closest .flex-row"
       hx-swap="outerHTML"
       hx-indicator="#loading"
       hx-include="input[data-include-add]"
@@ -50,10 +50,10 @@
       class="button-small-light"
       href=""
       hx-get="/company"
-      hx-target="closest tr"
+      hx-target="closest .flex-row"
       hx-swap="delete"
       hx-indicator="#loading"
       >Cancel</a
     >
-  </td>
-</tr>
+  </div>
+</div>

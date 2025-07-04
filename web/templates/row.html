@@ -1,10 +1,10 @@
-<tr id="datarow-{{.Company.ID}}">
-  <td>{{.OrdinalID}}</td>
-  <td>{{.Company.Company}}</td>
-  <td>{{.Company.Contact}}</td>
-  <td>{{.Company.Country}}</td>
-  <td>{{.Company.Employees}}</td>
-  <td>
+<div class="flex-row" id="datarow-{{.Company.ID}}">
+  <div class="flex-cell flex-cell-id">{{.OrdinalID}}</div>
+  <div class="flex-cell flex-cell-company">{{.Company.Company}}</div>
+  <div class="flex-cell flex-cell-contact">{{.Company.Contact}}</div>
+  <div class="flex-cell flex-cell-country">{{.Company.Country}}</div>
+  <div class="flex-cell flex-cell-employees">{{.Company.Employees}}</div>
+  <div class="flex-cell flex-cell-actions">
     <a
       class="button-edit button-small-light"
       href=""
@@ -19,11 +19,11 @@
       class="button-delete button-small-light"
       href=""
       hx-delete="/company/{{.Company.ID}}"
-      hx-target="closest tr"
+      hx-target="closest .flex-row"
       hx-swap="delete"
       hx-confirm="Are you sure you want to delete {{.Company.Company}}?"
       hx-indicator="#loading"
       >Delete</a
     >
-  </td>
-</tr>
+  </div>
+</div>

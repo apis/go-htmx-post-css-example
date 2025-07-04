@@ -1,59 +1,68 @@
-#companies > table {
-    table-layout: auto;
+#companies .flex-table {
     width: 100%;
-    border-collapse: collapse;
+    display: flex;
+    flex-direction: column;
 }
 
-#companies > table > thead {
+#companies .flex-table-header {
     font-family: var(--font-secondary);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-bold);
     background-color: var(--table-header-background);
 }
 
-#companies > table > thead > tr,
-#companies > table > tbody > tr {
+#companies .flex-row {
+    display: flex;
+    flex-direction: row;
     border-bottom: 1px solid var(--table-border-color);
 }
 
-#companies > table > tbody > tr:hover {
+#companies .flex-table-body .flex-row:hover {
     background-color: var(--table-row-hover);
 }
 
-#companies > table > thead > tr > th,
-#companies > table > tbody > tr > td {
+#companies .flex-cell {
     padding: var(--spacing-md) var(--spacing-lg);
+    flex: 1;
 }
 
-
-
-#companies > table > tbody td:nth-child(1) {
+#companies .flex-cell-id {
+    flex: 0.5;
     text-align: center;
 }
 
-#companies > table > tbody td:nth-child(2) {
+#companies .flex-cell-company {
+    flex: 2;
     text-align: left;
 }
 
-#companies > table > tbody td:nth-child(3) {
+#companies .flex-cell-contact {
+    flex: 2;
     text-align: left;
 }
 
-#companies > table > tbody td:nth-child(4) {
+#companies .flex-cell-country {
+    flex: 1.5;
     text-align: left;
 }
 
-#companies > table > tbody > tr > td > a {
-    width: 60px;
+#companies .flex-cell-employees {
+    flex: 1;
+    text-align: left;
 }
 
-#companies > table > tbody > tr > td > input {
+#companies .flex-cell-actions {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    display: flex;
+    gap: var(--spacing-xs);
+}
+
+#companies .flex-cell input {
     display: flex;
     flex-direction: row;
-}
-
-#companies > table > tbody > tr > td > input {
     flex: 1;
+    width: 100%;
     height: 2rem;
     border: 1px solid var(--input-border);
     border-radius: var(--border-radius-sm);
@@ -65,12 +74,6 @@
     padding: 0 var(--spacing-xs);
 }
 
-#companies > table > tbody > tr > td:last-child, #companies > table > thead > tr > th:last-child {
-    width: 1%;
-    white-space: nowrap;
-}
-
-#companies > table > tbody > tr > td:last-child {
-    display: flex;
-    gap: var(--spacing-xs);
+#companies .flex-cell a {
+    width: 60px;
 }

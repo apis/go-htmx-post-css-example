@@ -1,8 +1,8 @@
 <div id="companies">
-  <table>
-    <thead>
-      <tr>
-        <th scope="col">
+  <div class="flex-table">
+    <div class="flex-table-header">
+      <div class="flex-row">
+        <div class="flex-cell flex-cell-id">
           {{if eq .SortColumn "ID"}}
             {{if eq .SortDir "asc"}}
               <a href="#" hx-get="/companies?sort=ID&dir=desc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading"># ▲</a>
@@ -12,8 +12,8 @@
           {{else}}
             <a href="#" hx-get="/companies?sort=ID&dir=asc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">#</a>
           {{end}}
-        </th>
-        <th scope="col">
+        </div>
+        <div class="flex-cell flex-cell-company">
           {{if eq .SortColumn "Company"}}
             {{if eq .SortDir "asc"}}
               <a href="#" hx-get="/companies?sort=Company&dir=desc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Company ▲</a>
@@ -23,8 +23,8 @@
           {{else}}
             <a href="#" hx-get="/companies?sort=Company&dir=asc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Company</a>
           {{end}}
-        </th>
-        <th scope="col">
+        </div>
+        <div class="flex-cell flex-cell-contact">
           {{if eq .SortColumn "Contact"}}
             {{if eq .SortDir "asc"}}
               <a href="#" hx-get="/companies?sort=Contact&dir=desc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Contact ▲</a>
@@ -34,8 +34,8 @@
           {{else}}
             <a href="#" hx-get="/companies?sort=Contact&dir=asc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Contact</a>
           {{end}}
-        </th>
-        <th scope="col">
+        </div>
+        <div class="flex-cell flex-cell-country">
           {{if eq .SortColumn "Country"}}
             {{if eq .SortDir "asc"}}
               <a href="#" hx-get="/companies?sort=Country&dir=desc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Country ▲</a>
@@ -45,8 +45,8 @@
           {{else}}
             <a href="#" hx-get="/companies?sort=Country&dir=asc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Country</a>
           {{end}}
-        </th>
-        <th scope="col">
+        </div>
+        <div class="flex-cell flex-cell-employees">
           {{if eq .SortColumn "Employees"}}
             {{if eq .SortDir "asc"}}
               <a href="#" hx-get="/companies?sort=Employees&dir=desc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Employees ▲</a>
@@ -56,16 +56,16 @@
           {{else}}
             <a href="#" hx-get="/companies?sort=Employees&dir=asc" hx-target="#companies" hx-swap="outerHTML" hx-indicator="#loading">Employees</a>
           {{end}}
-        </th>
-        <th scope="col">Actions</th>
-      </tr>
-    </thead>
-    <tbody id="table-body">
+        </div>
+        <div class="flex-cell flex-cell-actions">Actions</div>
+      </div>
+    </div>
+    <div class="flex-table-body" id="table-body">
       {{range .Companies}}
         {{ template "row.html". }}
       {{end}}
-    </tbody>
-  </table>
+    </div>
+  </div>
   <div class="add-box">
     <div class="add-button">
       <button

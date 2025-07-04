@@ -1,6 +1,6 @@
-<tr id="datarow-{{.Company.ID}}">
-  <td>{{.OrdinalID}}</td>
-  <td>
+<div class="flex-row" id="datarow-{{.Company.ID}}">
+  <div class="flex-cell flex-cell-id">{{.OrdinalID}}</div>
+  <div class="flex-cell flex-cell-company">
     <input
       type="text"
       data-include-edit="{{.Company.ID}}"
@@ -8,24 +8,24 @@
       value="{{.Company.Company}}"
       autofocus
     />
-  </td>
-  <td>
+  </div>
+  <div class="flex-cell flex-cell-contact">
     <input
       type="text"
       data-include-edit="{{.Company.ID}}"
       name="contact"
       value="{{.Company.Contact}}"
     />
-  </td>
-  <td>
+  </div>
+  <div class="flex-cell flex-cell-country">
     <input
       type="text"
       data-include-edit="{{.Company.ID}}"
       name="country"
       value="{{.Company.Country}}"
     />
-  </td>
-  <td>
+  </div>
+  <div class="flex-cell flex-cell-employees">
     <input
       type="number"
       data-include-edit="{{.Company.ID}}"
@@ -34,8 +34,8 @@
       min="1"
       required
     />
-  </td>
-  <td>
+  </div>
+  <div class="flex-cell flex-cell-actions">
     <a
       class="button-small-light"
       href=""
@@ -55,5 +55,5 @@
       hx-indicator="#loading"
       >Cancel</a
     >
-  </td>
-</tr>
+  </div>
+</div>
