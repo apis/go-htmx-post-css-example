@@ -11,10 +11,12 @@ import (
 	"time"
 )
 
-// CompanyViewModel wraps a Company and adds an OrdinalID field
+// CompanyViewModel wraps a Company and adds an OrdinalID field and sort parameters
 type CompanyViewModel struct {
-	Company   models.Company
-	OrdinalID int
+	Company    models.Company
+	OrdinalID  int
+	SortColumn string
+	SortDir    string
 }
 
 // CompaniesTableViewModel represents the data needed to render the companies table
@@ -60,8 +62,10 @@ func (instance CompaniesViewModel) getCompaniesViewModel(request *http.Request, 
 	companyViewModels := make([]CompanyViewModel, 0, len(companies.All()))
 	for _, company := range companies.All() {
 		companyViewModels = append(companyViewModels, CompanyViewModel{
-			Company:   company,
-			OrdinalID: 0, // Will be set after sorting
+			Company:    company,
+			OrdinalID:  0, // Will be set after sorting
+			SortColumn: sortColumn,
+			SortDir:    sortDir,
 		})
 	}
 
@@ -133,12 +137,72 @@ func sortCompanies(companies []CompanyViewModel, column, direction string) {
 	})
 }
 
+// getSortedOrdinalID returns the ordinal ID for a company based on the current sort order
+func (instance CompaniesViewModel) getSortedOrdinalID(companies *models.Companies, id string, request *http.Request) int {
+	// Get sort parameters from query string or use defaults
+	sortColumn := request.URL.Query().Get("sort")
+	sortDir := request.URL.Query().Get("dir")
+	if sortColumn == "" {
+		sortColumn = "ID" // Default sort column
+	}
+	if sortDir == "" {
+		sortDir = "asc" // Default sort direction
+	}
+
+	// Convert Company to CompanyViewModel
+	companyViewModels := make([]CompanyViewModel, 0, len(companies.All()))
+	for _, company := range companies.All() {
+		companyViewModels = append(companyViewModels, CompanyViewModel{
+			Company:    company,
+			OrdinalID:  0, // Will be set after sorting
+			SortColumn: sortColumn,
+			SortDir:    sortDir,
+		})
+	}
+
+	// Sort the companies based on the sort column and direction
+	sortCompanies(companyViewModels, sortColumn, sortDir)
+
+	// Assign ordinal IDs based on the current sort order
+	for i := range companyViewModels {
+		companyViewModels[i].OrdinalID = i + 1
+	}
+
+	// Find the ordinal ID for the specified company
+	for _, company := range companyViewModels {
+		if company.Company.ID == id {
+			return company.OrdinalID
+		}
+	}
+
+	return 0 // Not found
+}
+
 func (instance CompaniesViewModel) AddCompany(request *http.Request,
 	simulatedDelay int) *web.Response {
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
 
+	// Get sort parameters from query string or use defaults
+	sortColumn := request.URL.Query().Get("sort")
+	sortDir := request.URL.Query().Get("dir")
+	if sortColumn == "" {
+		sortColumn = "ID" // Default sort column
+	}
+	if sortDir == "" {
+		sortDir = "asc" // Default sort direction
+	}
+
+	// Create a view model with sort parameters
+	viewModel := struct {
+		SortColumn string
+		SortDir    string
+	}{
+		SortColumn: sortColumn,
+		SortDir:    sortDir,
+	}
+
 	headers := map[string]string{"HX-Trigger-After-Swap": "{\"enterEditMode\":\"\"}"}
-	return web.RenderResponse(http.StatusOK, instance.templates, "row-add.html", nil, headers)
+	return web.RenderResponse(http.StatusOK, instance.templates, "row-add.html", viewModel, headers)
 }
 
 func (instance CompaniesViewModel) SaveNewCompany(request *http.Request,
@@ -176,10 +240,25 @@ func (instance CompaniesViewModel) SaveNewCompany(request *http.Request,
 
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
 
-	// Wrap the company in a CompanyViewModel
+	// Get sort parameters from query string or use defaults
+	sortColumn := request.URL.Query().Get("sort")
+	sortDir := request.URL.Query().Get("dir")
+	if sortColumn == "" {
+		sortColumn = "ID" // Default sort column
+	}
+	if sortDir == "" {
+		sortDir = "asc" // Default sort direction
+	}
+
+	// Get the ordinal ID based on the current sort order
+	ordinalID := instance.getSortedOrdinalID(companies, row.ID, request)
+
+	// Create a view model with company and sort parameters
 	viewModel := CompanyViewModel{
-		Company:   row,
-		OrdinalID: len(companies.All()), // New company is added at the end
+		Company:    row,
+		OrdinalID:  ordinalID,
+		SortColumn: sortColumn,
+		SortDir:    sortDir,
 	}
 
 	headers := map[string]string{"HX-Trigger-After-Swap": "{\"exitEditMode\":\"\"}"}
@@ -206,19 +285,25 @@ func (instance CompaniesViewModel) EditCompany(request *http.Request,
 	row := companies.GetByID(id)
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
 
-	// Find the ordinal ID for this company
-	ordinalID := 0
-	for i, company := range companies.All() {
-		if company.ID == id {
-			ordinalID = i + 1
-			break
-		}
+	// Get sort parameters from query string or use defaults
+	sortColumn := request.URL.Query().Get("sort")
+	sortDir := request.URL.Query().Get("dir")
+	if sortColumn == "" {
+		sortColumn = "ID" // Default sort column
+	}
+	if sortDir == "" {
+		sortDir = "asc" // Default sort direction
 	}
 
-	// Wrap the company in a CompanyViewModel
+	// Get the ordinal ID based on the current sort order
+	ordinalID := instance.getSortedOrdinalID(companies, id, request)
+
+	// Create a view model with company and sort parameters
 	viewModel := CompanyViewModel{
-		Company:   row,
-		OrdinalID: ordinalID,
+		Company:    row,
+		OrdinalID:  ordinalID,
+		SortColumn: sortColumn,
+		SortDir:    sortDir,
 	}
 
 	headers := map[string]string{"HX-Trigger-After-Swap": "{\"enterEditMode\":\"\"}"}
@@ -262,19 +347,25 @@ func (instance CompaniesViewModel) SaveExistingCompany(request *http.Request,
 
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
 
-	// Find the ordinal ID for this company
-	ordinalID := 0
-	for i, company := range companies.All() {
-		if company.ID == id {
-			ordinalID = i + 1
-			break
-		}
+	// Get sort parameters from query string or use defaults
+	sortColumn := request.URL.Query().Get("sort")
+	sortDir := request.URL.Query().Get("dir")
+	if sortColumn == "" {
+		sortColumn = "ID" // Default sort column
+	}
+	if sortDir == "" {
+		sortDir = "asc" // Default sort direction
 	}
 
-	// Wrap the company in a CompanyViewModel
+	// Get the ordinal ID based on the current sort order
+	ordinalID := instance.getSortedOrdinalID(companies, id, request)
+
+	// Create a view model with company and sort parameters
 	viewModel := CompanyViewModel{
-		Company:   row,
-		OrdinalID: ordinalID,
+		Company:    row,
+		OrdinalID:  ordinalID,
+		SortColumn: sortColumn,
+		SortDir:    sortDir,
 	}
 
 	headers := map[string]string{"HX-Trigger-After-Swap": "{\"exitEditMode\":\"\"}"}
@@ -293,19 +384,25 @@ func (instance CompaniesViewModel) CancelSaveExistingCompany(request *http.Reque
 	row := companies.GetByID(id)
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
 
-	// Find the ordinal ID for this company
-	ordinalID := 0
-	for i, company := range companies.All() {
-		if company.ID == id {
-			ordinalID = i + 1
-			break
-		}
+	// Get sort parameters from query string or use defaults
+	sortColumn := request.URL.Query().Get("sort")
+	sortDir := request.URL.Query().Get("dir")
+	if sortColumn == "" {
+		sortColumn = "ID" // Default sort column
+	}
+	if sortDir == "" {
+		sortDir = "asc" // Default sort direction
 	}
 
-	// Wrap the company in a CompanyViewModel
+	// Get the ordinal ID based on the current sort order
+	ordinalID := instance.getSortedOrdinalID(companies, id, request)
+
+	// Create a view model with company and sort parameters
 	viewModel := CompanyViewModel{
-		Company:   row,
-		OrdinalID: ordinalID,
+		Company:    row,
+		OrdinalID:  ordinalID,
+		SortColumn: sortColumn,
+		SortDir:    sortDir,
 	}
 
 	headers := map[string]string{"HX-Trigger-After-Swap": "{\"exitEditMode\":\"\"}"}

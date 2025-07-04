@@ -39,7 +39,7 @@
     <a
       class="button-small-light"
       href=""
-      hx-put="/company/{{.Company.ID}}"
+      hx-put="/company/{{.Company.ID}}?sort={{.SortColumn}}&dir={{.SortDir}}"
       hx-target="#datarow-{{.Company.ID}}"
       hx-swap="outerHTML"
       hx-indicator="#loading"
@@ -49,7 +49,7 @@
     <a
       class="button-small-light"
       href=""
-      hx-get="/company/{{.Company.ID}}"
+      hx-get="/company/{{.Company.ID}}?sort={{.SortColumn}}&dir={{.SortDir}}"
       hx-target="#datarow-{{.Company.ID}}"
       hx-swap="outerHTML"
       hx-indicator="#loading"

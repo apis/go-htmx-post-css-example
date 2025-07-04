@@ -8,7 +8,7 @@
     <a
       class="button-edit button-small-light"
       href=""
-      hx-get="/company/edit/{{.Company.ID}}"
+      hx-get="/company/edit/{{.Company.ID}}?sort={{.SortColumn}}&dir={{.SortDir}}"
       hx-target="#datarow-{{.Company.ID}}"
       hx-swap="outerHTML"
       hx-indicator="#loading"
@@ -18,7 +18,7 @@
     <a
       class="button-delete button-small-light"
       href=""
-      hx-delete="/company/{{.Company.ID}}"
+      hx-delete="/company/{{.Company.ID}}?sort={{.SortColumn}}&dir={{.SortDir}}"
       hx-target="closest .flex-row"
       hx-swap="delete"
       hx-confirm="Are you sure you want to delete {{.Company.Company}}?"

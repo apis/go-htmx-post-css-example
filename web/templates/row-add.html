@@ -39,7 +39,7 @@
     <a
       class="button-small-light"
       href=""
-      hx-post="/company"
+      hx-post="/company?sort={{.SortColumn}}&dir={{.SortDir}}"
       hx-target="closest .flex-row"
       hx-swap="outerHTML"
       hx-indicator="#loading"
@@ -49,7 +49,7 @@
     <a
       class="button-small-light"
       href=""
-      hx-get="/company"
+      hx-get="/company?sort={{.SortColumn}}&dir={{.SortDir}}"
       hx-target="closest .flex-row"
       hx-swap="delete"
       hx-indicator="#loading"
