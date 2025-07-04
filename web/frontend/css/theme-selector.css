@@ -1,14 +1,16 @@
 /* theme-selector.css */
 .theme-selector {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
 }
 
 .theme-selector select {
-    padding: 5px;
-    border-radius: 5px;
+    padding: var(--spacing-xs);
+    border-radius: var(--border-radius-sm);
     border: 1px solid var(--input-border);
     background-color: var(--input-background);
     color: var(--input-text);
+    font-family: var(--font-primary);
+    font-size: var(--font-size-xs);
 }

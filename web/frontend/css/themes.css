@@ -1,5 +1,6 @@
 /* themes.css */
 :root {
+    /* Colors */
     --background-color: #111827;
     --text-color: #d1d5db;
     --table-header-background: #1f2937;
@@ -8,9 +9,35 @@
     --button-background: #374151;
     --button-text: #ffffff;
     --button-hover-background: #1f2937;
+    --button-light-background: linear-gradient(-180deg, #989898 0%, #494949 100%);
+    --button-light-hover-background: linear-gradient(-180deg, #787878 0%, #3c3c3c 100%);
+    --button-light-text: #dcdcdc;
     --input-background: #1f2937;
     --input-border: #374151;
     --input-text: #ffffff;
+
+    /* Typography */
+    --font-primary: 'Trebuchet MS', Verdana, sans-serif;
+    --font-secondary: Helvetica, Arial, sans-serif;
+    --font-size-xs: 0.875rem;
+    --font-size-sm: 1rem;
+    --font-size-md: 1.25rem;
+    --font-size-lg: 1.5rem;
+    --font-size-xl: 1.8rem;
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-bold: 600;
+
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+
+    /* Border radius */
+    --border-radius-sm: 0.375rem;
+    --border-radius-md: 0.5rem;
 }
 
 [data-theme="light"] {
@@ -22,6 +49,9 @@
     --button-background: #d1d5db;
     --button-text: #1f2937;
     --button-hover-background: #e5e7eb;
+    --button-light-background: linear-gradient(-180deg, #e5e7eb 0%, #d1d5db 100%);
+    --button-light-hover-background: linear-gradient(-180deg, #d1d5db 0%, #9ca3af 100%);
+    --button-light-text: #1f2937;
     --input-background: #ffffff;
     --input-border: #d1d5db;
     --input-text: #1f2937;
