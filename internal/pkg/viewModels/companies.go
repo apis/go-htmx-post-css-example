@@ -6,6 +6,7 @@ import (
 	"htmx-example/internal/pkg/storage"
 	"htmx-example/internal/pkg/web"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -53,8 +54,14 @@ func (instance CompaniesViewModel) SaveNewCompany(request *http.Request,
 	row.Company = request.Form.Get("company")
 	row.Contact = request.Form.Get("contact")
 	row.Country = request.Form.Get("country")
-	row.Employees = request.Form.Get("employees")
-	row.Employees = request.Form.Get("employees")
+
+	// Convert employees to int and validate
+	employeesStr := request.Form.Get("employees")
+	employees, err := strconv.Atoi(employeesStr)
+	if err != nil {
+		return web.GetEmptyResponse(http.StatusBadRequest, nil)
+	}
+	row.Employees = employees
 
 	companies, err := instance.jsonStorage.Read()
 	if err != nil {
@@ -117,7 +124,15 @@ func (instance CompaniesViewModel) SaveExistingCompany(request *http.Request,
 	row.Company = request.Form.Get("company")
 	row.Contact = request.Form.Get("contact")
 	row.Country = request.Form.Get("country")
-	row.Employees = request.Form.Get("employees")
+
+	// Convert employees to int and validate
+	employeesStr := request.Form.Get("employees")
+	employees, err := strconv.Atoi(employeesStr)
+	if err != nil {
+		return web.GetEmptyResponse(http.StatusBadRequest, nil)
+	}
+	row.Employees = employees
+
 	companies.Update(row)
 
 	err = instance.jsonStorage.Write(companies)

@@ -8,6 +8,7 @@ require (
 	github.com/go-chi/chi/v5 v5.2.2
 	github.com/go-chi/cors v1.2.2
 	github.com/go-chi/httplog/v2 v2.1.1
+	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.34.0
 	github.com/spf13/pflag v1.0.6
 	github.com/spf13/viper v1.20.1

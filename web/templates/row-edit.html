@@ -27,10 +27,12 @@
   </td>
   <td>
     <input
-      type="text"
+      type="number"
       data-include-edit="{{.ID}}"
       name="employees"
       value="{{.Employees}}"
+      min="1"
+      required
     />
   </td>
   <td>

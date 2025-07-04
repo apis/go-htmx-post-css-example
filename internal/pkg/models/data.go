@@ -1,7 +1,7 @@
 package models
 
 import (
-	"strconv"
+	"github.com/google/uuid"
 )
 
 type Company struct {
@@ -9,7 +9,7 @@ type Company struct {
 	Company   string
 	Contact   string
 	Country   string
-	Employees string
+	Employees int
 }
 
 type Companies struct {
@@ -50,15 +50,7 @@ func (c *Companies) Update(company Company) {
 }
 
 func (c *Companies) Add(company *Company) {
-	max := 0
-	for _, i := range c.Companies {
-		n, _ := strconv.Atoi(i.ID)
-		if n > max {
-			max = n
-		}
-	}
-	max++
-	id := strconv.Itoa(max)
+	id := uuid.New().String()
 
 	company.ID = id
 	c.Companies = append(c.Companies, Company{
