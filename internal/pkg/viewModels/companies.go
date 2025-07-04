@@ -36,8 +36,9 @@ func NewCompaniesViewModel(templates *template.Template, jsonStorage *storage.Js
 	}
 }
 
-func (instance CompaniesViewModel) Index(request *http.Request,
-	simulatedDelay int) *web.Response {
+// getCompaniesViewModel is a helper method that contains the common logic for retrieving
+// and preparing the companies view model
+func (instance CompaniesViewModel) getCompaniesViewModel(request *http.Request, simulatedDelay int, templateName string) *web.Response {
 	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
 
 	// Get sort parameters from query string
@@ -79,53 +80,15 @@ func (instance CompaniesViewModel) Index(request *http.Request,
 		SortDir:    sortDir,
 	}
 
-	return web.RenderResponse(http.StatusOK, instance.templates, "index.html", tableViewModel, nil)
+	return web.RenderResponse(http.StatusOK, instance.templates, templateName, tableViewModel, nil)
 }
 
-func (instance CompaniesViewModel) Companies(request *http.Request,
-	simulatedDelay int) *web.Response {
-	time.Sleep(time.Duration(simulatedDelay) * time.Millisecond)
+func (instance CompaniesViewModel) Index(request *http.Request, simulatedDelay int) *web.Response {
+	return instance.getCompaniesViewModel(request, simulatedDelay, "index.html")
+}
 
-	// Get sort parameters from query string
-	sortColumn := request.URL.Query().Get("sort")
-	sortDir := request.URL.Query().Get("dir")
-	if sortColumn == "" {
-		sortColumn = "ID" // Default sort column
-	}
-	if sortDir == "" {
-		sortDir = "asc" // Default sort direction
-	}
-
-	companies, err := instance.jsonStorage.Read()
-	if err != nil {
-		return web.GetEmptyResponse(http.StatusInternalServerError, nil)
-	}
-
-	// Convert Company to CompanyViewModel
-	companyViewModels := make([]CompanyViewModel, 0, len(companies.All()))
-	for _, company := range companies.All() {
-		companyViewModels = append(companyViewModels, CompanyViewModel{
-			Company:   company,
-			OrdinalID: 0, // Will be set after sorting
-		})
-	}
-
-	// Sort the companies based on the sort column and direction
-	sortCompanies(companyViewModels, sortColumn, sortDir)
-
-	// Assign ordinal IDs based on the current sort order
-	for i := range companyViewModels {
-		companyViewModels[i].OrdinalID = i + 1
-	}
-
-	// Create the view model for the template
-	tableViewModel := CompaniesTableViewModel{
-		Companies:  companyViewModels,
-		SortColumn: sortColumn,
-		SortDir:    sortDir,
-	}
-
-	return web.RenderResponse(http.StatusOK, instance.templates, "companies.html", tableViewModel, nil)
+func (instance CompaniesViewModel) Companies(request *http.Request, simulatedDelay int) *web.Response {
+	return instance.getCompaniesViewModel(request, simulatedDelay, "companies.html")
 }
 
 // sortCompanies sorts the companies based on the specified column and direction
